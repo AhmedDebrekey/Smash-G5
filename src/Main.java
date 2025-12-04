@@ -1,5 +1,5 @@
 import ENUMS.Discipline;
-
+import java.util.InputMismatchException;
 import java.util.EnumSet;
 import java.util.Scanner;
 
@@ -11,7 +11,7 @@ public class Main {
 
         Coach johan = new Coach("Johan Hansen", 19880713, "Johanhansen@gmail.dk");
 
-        Member rikke = new Member("Rikke Kristoffersen", 1991, "Rikkekristoffersen", 1, johan, EnumSet.of(Discipline.DOUBLE));
+        smash.addCoach(johan);
 
         Scanner input = new Scanner(System.in);
         boolean running = true;
@@ -33,7 +33,7 @@ public class Main {
             switch (choice) {
                 case "1" -> {
                     System.out.println(">>> Adding member... ");
-                    // TODO: Add Member stuff
+                    smash.createMember();
                 }
 
                 case "2" -> {

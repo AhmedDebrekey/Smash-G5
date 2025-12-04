@@ -1,8 +1,17 @@
+import ENUMS.Discipline;
+
+import java.util.EnumSet;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        Club smash = new Club("Smash", "Guldbergsgade 29N");
+
+        Coach johan = new Coach("Johan Hansen", 19880713, "Johanhansen@gmail.dk");
+
+        Member rikke = new Member("Rikke Kristoffersen", 1991, "Rikkekristoffersen", 1, johan, EnumSet.of(Discipline.DOUBLE));
 
         Scanner input = new Scanner(System.in);
         boolean running = true;

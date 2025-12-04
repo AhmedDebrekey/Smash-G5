@@ -1,17 +1,8 @@
-import java.util.EnumSet;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-
-        Club smash = new Club("Smash", "Guldbergsgade 29N");
-
-        Coach hans = new Coach("hans", 1991, "Hanskristensen@gmail.dk");
-
-        smash.addCoach(hans);
-
-        Member johan = new Member("Johan", 1998, "Johanjensen@gmail.dk", 1, hans, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE));
 
         Scanner input = new Scanner(System.in);
         boolean running = true;
@@ -27,6 +18,7 @@ public class Main {
             System.out.println("7. Load data");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
+            System.out.println("hej");
 
             String choice = input.nextLine();
 

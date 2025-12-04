@@ -19,7 +19,6 @@ public class Main {
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
             System.out.println("hej");
-            System.out.println("farvel");
 
             String choice = input.nextLine();
 

@@ -314,7 +314,7 @@ public class Club
         for (Member m : members)
         {
             Payment p = cashier.getPayment(m);
-            System.out.println(m.getName() + "(ID: " + m.getMemberId() + " ), Fee: " + p.getAmount() + " kr., Paid: " + p.isPaid());
+            System.out.println(m.getName() + " (ID: " + m.getMemberId() + " ), Fee: " + p.getAmount() + " kr., Paid: " + p.isPaid());
         }
 
         System.out.println("\n --Members in debt--");

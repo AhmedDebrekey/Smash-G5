@@ -3,7 +3,7 @@ public class Payment {
     private int amount;
     private boolean paid;
 
-    public Payment (int year, int amaount)
+    public Payment (int year, int amount)
     {
         this.year = year;
         this.amount = amount;

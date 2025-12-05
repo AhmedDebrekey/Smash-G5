@@ -89,7 +89,8 @@ public class Club
         }
 
         scanner.nextLine();
-
+        //Må kun indeholde 8 cifre.
+        //lave som String.
         System.out.print("\nPlease enter birthdate of member in the format YYYYMMDD: ");
         int bDay;
         while (true)

@@ -199,6 +199,7 @@ public class Club
 
         Member member = new Member(name, bDay, email, memberId, chosenCoach, chosenDisciplines);
         members.add(member);
+        cashier.registerMember(member);
     }
 
     public void editMember() {
@@ -309,7 +310,7 @@ public class Club
     public void paymentOverview(){
         System.out.println("\n ----PAYMENT OVERVIEW----");
 
-        System.out.println("\n --Members and thier fees--");
+        System.out.println("\n --Members and their fees--");
         for (Member m : members)
         {
             Payment p = cashier.getPayment(m);
@@ -330,7 +331,7 @@ public class Club
 
         if(!anyInDebt)
         {
-            System.out.println("No member are in debt");
+            System.out.println("No members are in debt");
         }
     }
 }

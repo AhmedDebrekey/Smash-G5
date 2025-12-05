@@ -50,7 +50,7 @@ public class Main {
                 }
                 case "5"  -> {
                     System.out.println("\n>>> Showing payment overview...");
-                    // TODO: Show overview over payments
+                    smash.paymentOverview();
                 }
                 case "6" -> {
                     System.out.println("\n>>> Saving data... ");

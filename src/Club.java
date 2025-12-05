@@ -14,6 +14,7 @@ public class Club
     private ArrayList<Member> members = new ArrayList<>();
     private ArrayList<Coach> coaches = new ArrayList<>();
     Scanner scanner = new Scanner(System.in);
+    private Cashier cashier = new Cashier();
 
     public Club(){}
 
@@ -301,5 +302,35 @@ public class Club
         }
 
         System.out.println("Member updated.");
+
+        cashier.registerMember(member);
+    }
+
+    public void paymentOverview(){
+        System.out.println("\n ----PAYMENT OVERVIEW----");
+
+        System.out.println("\n --Members and thier fees--");
+        for (Member m : members)
+        {
+            Payment p = cashier.getPayment(m);
+            System.out.println(m.getName() + "(ID: " + m.getMemberId() + " ), Fee: " + p.getAmount() + " kr., Paid: " + p.isPaid());
+        }
+
+        System.out.println("\n --Members in debt--");
+        boolean anyInDebt = false;
+
+        for (Member m : members)
+        {
+            if (cashier.isInDebt(m))
+            {
+                System.out.println("- " + m.getName() + " (ID: " + m.getMemberId() + ")");
+                anyInDebt = true;
+            }
+        }
+
+        if(!anyInDebt)
+        {
+            System.out.println("No member are in debt");
+        }
     }
 }

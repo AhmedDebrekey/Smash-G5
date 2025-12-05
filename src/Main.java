@@ -1,5 +1,5 @@
 import ENUMS.Discipline;
-
+import java.util.InputMismatchException;
 import java.util.EnumSet;
 import java.util.Scanner;
 
@@ -11,7 +11,7 @@ public class Main {
 
         Coach johan = new Coach("Johan Hansen", 19880713, "Johanhansen@gmail.dk");
 
-        Member rikke = new Member("Rikke Kristoffersen", 1991, "Rikkekristoffersen", 1, johan, EnumSet.of(Discipline.DOUBLE));
+        smash.addCoach(johan);
 
         Scanner input = new Scanner(System.in);
         boolean running = true;
@@ -32,42 +32,42 @@ public class Main {
 
             switch (choice) {
                 case "1" -> {
-                    System.out.println(">>> Adding member... ");
-                    // TODO: Add Member stuff
+                    System.out.println("\n>>> Adding member... ");
+                    smash.createMember();
                 }
 
                 case "2" -> {
-                    System.out.println(">>> Editing member... ");
-                    // TODO: Edit that memeber
+                    System.out.println("\n>>> Editing member... ");
+                    smash.editMember();
                 }
                 case "3"  -> {
-                    System.out.println(">>> Registering result... ");
+                    System.out.println("\n>>> Registering result... ");
                     // TODO: Register the resutls
                 }
                 case "4" -> {
-                    System.out.println(">>> Showing rankings... ");
+                    System.out.println("\n>>> Showing rankings... ");
                     // TODO: Show rankings
                 }
                 case "5"  -> {
-                    System.out.println(">>> Showing payment overview...");
-                    // TODO: Show overview over payments
+                    System.out.println("\n>>> Showing payment overview...");
+                    smash.paymentOverview();
                 }
                 case "6" -> {
-                    System.out.println(">>> Saving data... ");
+                    System.out.println("\n>>> Saving data... ");
                     // TODO: Save the data
                 }
 
                 case "7" -> {
-                    System.out.println(">>> Loading data... ");
+                    System.out.println("\n>>> Loading data... ");
                     // TODO: Load Data
                 }
                 case "0" -> {
-                    System.out.println("Exiting program...");
+                    System.out.println("\nExiting program...");
                     running = false;
                 }
 
                 default -> {
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println("\nInvalid option. Try again.");
                 }            }
         }
 

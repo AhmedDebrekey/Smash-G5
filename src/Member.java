@@ -76,4 +76,29 @@ public class Member extends Person
         return competitive;
     }
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public void setBirthdate(int bDay)
+    {
+        this.bDay = new Date(bDay);
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    public void setCoach(Coach coach)
+    {
+        this.coach = coach;
+    }
+
+    public void setDisciplines(EnumSet<Discipline> disciplines)
+    {
+        this.disciplines = disciplines;
+    }
+
 }

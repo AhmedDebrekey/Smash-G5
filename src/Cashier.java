@@ -25,7 +25,7 @@ public class Cashier {
             return 800; // junior
         } else if (age >= 60)
         {
-            return (int) (1500 + 0.75); // Senior med 25%
+            return (int) (1500 * 0.75); // Senior med 25%
         } else
         {
             return 1500; // senior

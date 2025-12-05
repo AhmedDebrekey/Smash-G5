@@ -204,12 +204,14 @@ public class Club
 
     public void editMember() {
 
+        scanner.nextLine();
         for (int i = 0; i < members.size(); i++)
         {
             Member member = members.get(i);
-            System.out.println("Name: "+ member.getName() + ", MemberID: " + member.getMemberId());
+            System.out.println("\nName: "+ member.getName() + ", MemberID: " + member.getMemberId());
         }
-        System.out.print("Enter MemberID to edit: ");
+        System.out.print("\nEnter MemberID to edit: ");
+
         Member member = null;
         try
         {
@@ -239,10 +241,10 @@ public class Club
             return;
         }
 
-        System.out.println("Editing member: " + member.getName());
+        System.out.println("\nEditing member: " + member.getName());
         scanner.nextLine();
 
-        System.out.print("Enter new name (press Enter to keep '" + member.getName() + "'): ");
+        System.out.print("\nEnter new name (press Enter to keep '" + member.getName() + "'): ");
         String name = scanner.nextLine();
 
         if (!name.isBlank()) {

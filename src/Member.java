@@ -1,6 +1,7 @@
 import ENUMS.AgeGroup;
 import ENUMS.Discipline;
 
+import java.util.EnumMap;
 import java.util.EnumSet;
 
 public class Member extends Person
@@ -8,19 +9,28 @@ public class Member extends Person
     private int memberId;
     private Coach coach;
     private boolean active;
+
     private EnumSet<Discipline> disciplines;
+
     private boolean competitive;
+    private EnumMap<Discipline, Integer> results;
 
     public Member(){}
 
-    public Member(String name, int bDay, String email, int memberId, Coach coach, EnumSet<Discipline> disciplines)
+    public Member(String name, int bDay, String email, int memberId, Coach coach, EnumSet<Discipline> disciplines, boolean competitive)
     {
         super (name, bDay, email);
         this.memberId = memberId;
         this.coach = coach;
-        active = true;
+        this.active = true;
         this.disciplines = disciplines;
-        competitive = true;
+        this.competitive = competitive;
+
+        this.results = new EnumMap<>(Discipline.class);
+
+        for (Discipline d : disciplines) {
+            this.results.put(d, 0);
+        }
     }
 
     public int getMemberId()
@@ -33,12 +43,12 @@ public class Member extends Person
         return coach;
     }
 
-    public void active()
+    public void setToActive()
     {
         active = true;
     }
 
-    public void passive()
+    public void setToPassive()
     {
         active = false;
     }
@@ -61,14 +71,9 @@ public class Member extends Person
             return AgeGroup.JUNIOR;
     }
 
-    public void competitive()
+    public void setCompetitive(boolean competitive)
     {
-        competitive = true;
-    }
-
-    public void motionist()
-    {
-        competitive = false;
+        this.competitive = competitive;
     }
 
     public boolean isCompetitive()
@@ -96,9 +101,26 @@ public class Member extends Person
         this.coach = coach;
     }
 
+    public EnumSet<Discipline> getDisciplines() {
+        return disciplines;
+    }
+
     public void setDisciplines(EnumSet<Discipline> disciplines)
     {
         this.disciplines = disciplines;
+    }
+
+    public void addResult(Discipline discipline, int value) {
+        if (!disciplines.contains(discipline)) {
+            System.out.println("Member is not registered for discipline " + discipline);
+            return;
+        }
+
+        results.put(discipline, value);
+    }
+
+    public int getResult(Discipline discipline) {
+        return results.getOrDefault(discipline, 0);
     }
 
 }

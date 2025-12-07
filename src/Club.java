@@ -1,10 +1,6 @@
 import ENUMS.Discipline;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Club
 {
@@ -15,7 +11,7 @@ public class Club
     private ArrayList<Coach> coaches = new ArrayList<>();
     Scanner scanner = new Scanner(System.in);
     private Cashier cashier = new Cashier();
-
+    private Map<Match, String> matches = new HashMap<>();
     public Club(){}
 
     public Club(String name, String adress)
@@ -80,63 +76,38 @@ public class Club
 
     public void createMember()
     {
-        System.out.print("\nPlease enter name of member: ");
-        String name = scanner.next();
-        while (!name.matches("[a-zA-ZæøåÆØÅ]+"))
-        {
-            System.out.print("\nName must contain only letters: ");
-            name = scanner.next();
-        }
+        String name = InputHelpers.ReadRegex(
+            "\nPlease enter name of member: ",
+            "Name must contain only letters.",
+            "[a-zA-ZæøåÆØÅ ]+"
+        );
 
-        scanner.nextLine();
         //Må kun indeholde 8 cifre.
         //lave som String.
-        System.out.print("\nPlease enter birthdate of member in the format YYYYMMDD: ");
-        int bDay;
-        while (true)
-        {
-            try
-            {
-                bDay = scanner.nextInt();
-                Date date = new Date(bDay);
-                if (date.valid())
-                {
-                    break;
-                }
-                else
-                {
-                    System.out.print("\nPlease enter a valid birthdate of member in the format YYYYMMDD: ");
-                }
-            }
-            catch (InputMismatchException e)
-            {
-                System.out.print("\nPlease enter a valid birthdate of member in the format YYYYMMDD: ");
-                scanner.nextLine();
-            }
-        }
+        int bDay = InputHelpers.ReadBirthDay(
+                "\nPlease enter birthdate of member in the format YYYYMMDD: ",
+                "Invalid Date use YYYYMMDD.");
 
-        System.out.print("\nPlease enter email of member: ");
-        String email = scanner.next();
-        while (!email.matches("[a-zA-Z0-9æøåÆØÅ@.]+") || !email.contains("@") || !email.contains("."))
-        {
-            System.out.print("\nPlease enter valid email address: ");
-            email = scanner.next();
-        }
+        InputHelpers.ClearLine();
 
-        System.out.print("\nPlease enter MemberID of member: ");
-        int memberId = 0;
-        try
-        {
-            memberId = scanner.nextInt();
-            while (memberIdExists(memberId, members))
-            {
-                System.out.print("\nThis ID already exists. Enter another ID: ");
-                memberId = scanner.nextInt();
+        String email = InputHelpers.ReadRegex(
+                "\nPlease enter email: ",
+                "Invalid email format.",
+                "[a-zA-Z0-9._%+-æøåÆØÅ]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+        );
+
+        int memberId;
+        while (true) {
+            memberId = InputHelpers.ReadInteger(
+                    "\nPlease enter member ID: ",
+                    "Invalid ID, must only contain numbers."
+            );
+
+            if (!memberIdExists(memberId, members)) {
+                break;
             }
-        }
-        catch (InputMismatchException e)
-        {
-            System.out.print("\nInvalid ID, must only contain numbers");
+
+            System.out.print("\nThis ID already exists. Enter another ID.\n");
         }
 
         System.out.println("\nAvailable coaches:");
@@ -145,97 +116,70 @@ public class Club
             System.out.println((i + 1) + ". " + coaches.get(i).getName());
         }
 
-        System.out.print("\nPlease enter the coach (number): ");
+        int chooseCoach = InputHelpers.ReadIntInRange(
+                "Choose a coach (1-" + coaches.size() + "): ",
+                "Invalid input, must only contain numbers. Please try again.",
+                "Invalid, please enter a valid number for a coach.",
+                1,
+                coaches.size()
+        );
 
-        int chooseCoach = 0;
-        while (true)
-        {
-            try
-            {
-                chooseCoach = scanner.nextInt();
-
-                if (chooseCoach >= 1 && chooseCoach <= coaches.size())
-                {
-                    break; // gyldigt - forlad loopet
-                }
-                else
-                {
-                    System.out.print("Invalid, Please enter a valid number for a coach: ");
-                }
-            }
-            catch (InputMismatchException e)
-            {
-                System.out.print("Invalid, input must only contain numbers, please try again: ");
-                scanner.nextLine();
-            }
-        }
         Coach chosenCoach = coaches.get(chooseCoach - 1);
 
-        System.out.println("\nAvailable disciplines:");
-        System.out.println(" ");
-        int index = 1;
-        for (Discipline d : Discipline.values())
-        {
-            System.out.println(index + ". " + d);
-            index++;
-        }
-        System.out.print("\nEnter the number(s) for the disciplines (seperated by commas): ");
-        String input = scanner.next();
-        String[] parts = input.split(",");
-        EnumSet<Discipline> chosenDisciplines = EnumSet.noneOf(Discipline.class);
-        for (String part : parts)
-        {
-            try
-            {
-                int choice = Integer.parseInt(part.trim());
-                Discipline selected = Discipline.values()[choice - 1];
-                chosenDisciplines.add(selected);
-            }
-            catch (Exception e)
-            {
-                System.out.println("\nInvalid discipline");
-            }
-        }
-        //Skal bruge mere test
+        EnumSet<Discipline> chosenDisciplines = InputHelpers.ReadDisciplines();
 
-        Member member = new Member(name, bDay, email, memberId, chosenCoach, chosenDisciplines);
+        boolean isCompetitive = InputHelpers.ReadYesOrNo(
+                "\nEnter if the player is competitive [y/n]: ",
+            "Invalid Input only use 'y' or 'n'");
+
+
+        Member member = new Member(name, bDay, email, memberId, chosenCoach, chosenDisciplines, isCompetitive);
         members.add(member);
         cashier.registerMember(member);
+
     }
 
-    public void editMember() {
-
-        scanner.nextLine();
-        for (int i = 0; i < members.size(); i++)
-        {
-            Member member = members.get(i);
+    private void showMembers() {
+        for (Member member : members) {
             System.out.println("\nName: "+ member.getName() + ", MemberID: " + member.getMemberId());
         }
-        System.out.print("\nEnter MemberID to edit: ");
+    }
 
-        Member member = null;
-        try
-        {
-            int id = scanner.nextInt();
+    private Member findMemberByID() {
+        while (true) {
+            int id = InputHelpers.ReadInteger(
+                    "\nEnter MemberID: ",
+                    "MemberID must only contain numbers. Try again."
+            );
 
-            for (int i = 0; i < members.size(); i++)
-            {
-                if (members.get(i).getMemberId() == id)
-                {
-                    member = members.get(i);
-                    break;
-                }
-                else
-                {
-                    System.out.print("Invalid MemberID, please try again: ");
+            for (Member m : members) {
+                if (m.getMemberId() == id) {
+                    return m; // Found!
                 }
             }
 
+            System.out.println("No member found with that ID. Please try again.");
         }
-        catch (InputMismatchException e)
+    }
+
+    private Member findMemberByID(int memberID){
+        for (Member m : members)
         {
-            System.out.println("MemberID can only consist of numbers, please try again: ");
+            if (m.getMemberId() == memberID)
+            {
+                    return m;
+            }
         }
+        System.out.println("No members in the club ahah losers...");
+        return null;
+    }
+
+
+
+    public void editMember() {
+        showMembers();
+
+        Member member = findMemberByID();
 
         if (member == null) {
             System.out.println("No member found with that ID.");
@@ -243,72 +187,90 @@ public class Club
         }
 
         System.out.println("\nEditing member: " + member.getName());
-        scanner.nextLine();
 
-        System.out.print("\nEnter new name (press Enter to keep '" + member.getName() + "'): ");
-        String name = scanner.nextLine();
+        // ---- NAME ----
+        String nameInput = InputHelpers.ReadOptionalRegex(
+                "\nEnter new name (press Enter to keep '" + member.getName() + "'): ",
+                "Name must contain only letters.",
+                "[a-zA-ZæøåÆØÅ ]+"   // allow Danish letters & spaces
+        );
 
-        if (!name.isBlank()) {
-            while (!name.matches("[a-zA-ZæøåÆØÅ]+")) {
-                System.out.print("Name must contain only letters: ");
-                name = scanner.nextLine();
-            }
-            member.setName(name);
+        if (!nameInput.isBlank()) {
+            member.setName(nameInput);
         }
 
-        System.out.print("Enter new email (press Enter to keep '" + member.getEmail() + "'): ");
-        String email = scanner.nextLine();
+        // ---- EMAIL ----
+        String emailInput = InputHelpers.ReadOptionalRegex(
+                "Enter new email (press Enter to keep '" + member.getEmail() + "'): ",
+                "Please enter a valid email address.",
+                "[a-zA-Z0-9._%+-æøåÆØÅ]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+        );
 
-        if (!email.isBlank()) {
-            while (!email.matches("[a-zA-Z0-9æøåÆØÅ@.]+") || !email.contains("@") || !email.contains(".")) {
-                System.out.print("Please enter valid email address: ");
-                email = scanner.nextLine();
-            }
-            member.setEmail(email);
+        if (!emailInput.isBlank()) {
+            member.setEmail(emailInput);
         }
 
-        System.out.println("Available coaches:");
+        // ---- COACH ----
+        System.out.println("\nAvailable coaches:");
         for (int i = 0; i < coaches.size(); i++) {
             System.out.println((i + 1) + ". " + coaches.get(i).getName());
         }
 
-        System.out.print("Choose new coach (0 = keep current): ");
-        int chooseCoach = scanner.nextInt();
+        int chooseCoach = InputHelpers.ReadIntInRange(
+                "Choose new coach (0 = keep current): ",
+                "Invalid input, must only contain numbers. Please try again.",
+                "Invalid, please enter a number between 0 and " + coaches.size() + ".",
+                0,
+                coaches.size()
+        );
 
-        if (chooseCoach > 0 && chooseCoach <= coaches.size()) {
+        if (chooseCoach > 0) {
             member.setCoach(coaches.get(chooseCoach - 1));
         }
 
-        System.out.println("Available disciplines:");
-
+        // ---- DISCIPLINES ----
+        System.out.println("\nAvailable disciplines:");
         for (int i = 0; i < Discipline.values().length; i++) {
             System.out.println((i + 1) + ". " + Discipline.values()[i]);
         }
 
-        System.out.print("Enter new disciplines (comma separated) or 0 to keep current: ");
-        String input = scanner.next();
+        // we want: 0 = keep current, otherwise comma separated list
+        String input = InputHelpers.ReadLine(
+                "Enter new disciplines (comma separated) or 0 to keep current: "
+        ).trim();
 
-        if (!input.equals("0")) {
+        if (!input.equals("0") && !input.isEmpty()) {
             String[] parts = input.split(",");
             EnumSet<Discipline> newDisciplines = EnumSet.noneOf(Discipline.class);
 
-            for (int i = 0; i < parts.length; i++) {
+            for (String part : parts) {
                 try {
-                    int choice = Integer.parseInt(parts[i].trim());
+                    int choice = Integer.parseInt(part.trim());
+                    if (choice < 1 || choice > Discipline.values().length) {
+                        System.out.println("Invalid discipline number: " + choice);
+                        continue;
+                    }
                     Discipline selected = Discipline.values()[choice - 1];
                     newDisciplines.add(selected);
-                } catch (Exception e) {
-                    System.out.println("Invalid discipline");
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid discipline: '" + part.trim() + "'");
                 }
             }
 
-            member.setDisciplines(newDisciplines);
+            if (!newDisciplines.isEmpty()) {
+                member.setDisciplines(newDisciplines);
+            }
         }
 
-        System.out.println("Member updated.");
+        boolean isCompetitive = InputHelpers.ReadYesOrNo(
+                "\nEnter if the player is competitive [y/n]: ",
+                "Invalid Input only use 'y' or 'n'");
+        member.setCompetitive(isCompetitive);
 
+        System.out.println("\nMember updated.");
         cashier.registerMember(member);
     }
+
 
     public void paymentOverview(){
         System.out.println("\n ----PAYMENT OVERVIEW----");
@@ -336,5 +298,176 @@ public class Club
         {
             System.out.println("No members are in debt");
         }
+    }
+
+    public void registerTournamentResults (){
+        showMembers();
+        Member member = findMemberByID();
+        if (member == null) {
+            System.out.println("No member found with that ID.");
+            return;
+        }
+        if (!member.isCompetitive()) {
+            System.out.println("Member " + member.getName() + " is not a competitive player.");
+            return;
+        }
+        EnumSet<Discipline> memberDisciplines = member.getDisciplines();
+
+        if (memberDisciplines.isEmpty()) {
+            System.out.println("Member is not registered for any disciplines.");
+            return;
+        }
+
+        System.out.println("\nSelect discipline:");
+        List<Discipline> disciplineList = new ArrayList<>(memberDisciplines);
+        for (int i = 0; i < disciplineList.size(); i++) {
+            System.out.println((i + 1) + ". " + disciplineList.get(i));
+        }
+
+        int choice;
+        while (true) {
+            System.out.println("Enter choice (1-" + disciplineList.size() + "): ");
+            choice = scanner.nextInt();
+            if (choice >= 1 && choice <= disciplineList.size()) {
+                break;
+            } else {
+                System.out.println("Please choose a valid number between 1 and " + disciplineList.size());
+            }
+        }
+
+        Discipline chosenDiscipline = disciplineList.get(choice - 1);
+        System.out.println("Enter Result");
+        int result = scanner.nextInt();
+        member.addResult(chosenDiscipline, result);
+
+        System.out.println("Result registered: " + member.getName() +
+                " now has " + member.getResult(chosenDiscipline) +
+                " in " + chosenDiscipline + ".");
+    }
+
+    public void seeRankings(){
+        for (Discipline d : Discipline.values())
+        {
+            List<Member> playersInDiscipline = new ArrayList<>();
+
+            for (Member m : members)
+            {
+                if (m.isCompetitive() && m.getdiscipline().contains(d))
+                {
+                    playersInDiscipline.add(m);
+                }
+            }
+
+            playersInDiscipline.sort(new Comparator<Member>() {
+                @Override
+                public int compare(Member m1, Member m2) {
+                    // sort descending (highest score first)
+                    return Integer.compare(
+                            m2.getResult(d),
+                            m1.getResult(d)
+                    );
+                }
+            });
+
+            System.out.println("\nRanking for discipline: " + d);
+
+            for (int i = 0; i < playersInDiscipline.size(); i++) {
+                Member m = playersInDiscipline.get(i);
+                System.out.println((i + 1) + ". " + m.getName() + " - " + m.getResult(d) + " points");
+            }
+
+            if (playersInDiscipline.isEmpty()) {
+                System.out.println("No competitive players in this discipline yet.");
+            }
+        }
+    }
+
+    public void registerTournament() {
+        List<Member> teamOne = new ArrayList<>();
+        List<Member> teamTwo = new ArrayList<>();
+        // ---- Name the Match ----
+        String nameOfMatch = InputHelpers.ReadString("Enter the name of the match: ", "Enter a valid name");
+        // ---- Choose Disciplin ----
+        Discipline chosenDisciplin = InputHelpers.ReadSingleDiscipline();
+        // ---- Adding players ----
+        int teamOnePlayers = InputHelpers.ReadInteger(
+                "How many players in team one?",
+                "Enter a valid number");
+        showMembers();
+        for (int i = 0; i < teamOnePlayers; i++) {
+            int playerID;
+            while (true) {
+                playerID = InputHelpers.ReadInteger(
+                        "\nPlease enter member ID: ",
+                        "Invalid ID, must only contain numbers."
+                );
+
+                if (memberIdExists(playerID, members)) {
+                    break;
+                }
+                else{
+                    System.out.println("Player ID does not exist.");
+                }
+
+            }
+            Member player = findMemberByID(playerID);
+            if (player != null){
+                teamOne.add(player);
+            }
+        }
+
+
+        int teamTwoPlayers = InputHelpers.ReadInteger(
+                "How many players in team two?",
+                "Enter a valid number");
+
+        showMembers();
+        for (int i = 0; i < teamTwoPlayers; i++) {
+            int playerID;
+            while (true) {
+                playerID = InputHelpers.ReadInteger(
+                        "\nPlease enter member ID: ",
+                        "Invalid ID, must only contain numbers."
+                );
+
+                if (memberIdExists(playerID, members)) {
+                    break;
+                }
+                else{
+                    System.out.println("Player ID does not exist.");
+                }
+
+            }
+            Member player = findMemberByID(playerID);
+            if (player != null){
+                teamTwo.add(player);
+            }
+        }
+
+        // ---- Registering scores for teams ----
+        int teamOneScore = InputHelpers.ReadInteger("Enter score for team one: ", "Enter a valid number");
+        int teamTwoScore = InputHelpers.ReadInteger("Enter score for team two: ", "Enter a valid number");
+
+        Match match = new Match(teamOne, teamTwo, chosenDisciplin, true, teamOneScore, teamTwoScore);
+        matches.put(match, nameOfMatch);
+    }
+
+    public void ShowMatchResults(){
+        int index = 1;
+        for (String name : matches.values())
+        {
+            System.out.println(index + ". " + name);
+            index++;
+        }
+
+
+        int matchIndex = InputHelpers.ReadInteger("Enter Match Index: ", "Enter a proper number dumbie");
+
+        List<Map.Entry<Match, String>> entries = new ArrayList<>(matches.entrySet());
+        Map.Entry<Match, String> selectedMatch = entries.get(matchIndex - 1);
+
+        System.out.println("Team one score: " + selectedMatch.getKey().getTeamOneScore());
+        System.out.println("Team two score: " + selectedMatch.getKey().getTeamTwoScore());
+        selectedMatch.getKey().showWinners();
     }
 }

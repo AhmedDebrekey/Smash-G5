@@ -1,10 +1,7 @@
 import ENUMS.Discipline;
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Club
 {
@@ -196,23 +193,40 @@ public class Club
                 System.out.println("\nInvalid discipline");
             }
         }
-        //Skal bruge mere test
-
-        Member member = new Member(name, bDay, email, memberId, chosenCoach, chosenDisciplines);
-        members.add(member);
-        cashier.registerMember(member);
-    }
-
-    public void editMember() {
 
         scanner.nextLine();
-        for (int i = 0; i < members.size(); i++)
-        {
-            Member member = members.get(i);
+
+        System.out.print("\nEnter if the player is competitive [y/n]: ");
+
+        boolean isCompetitive;
+
+        while (true) {
+            String ans = scanner.nextLine().trim().toLowerCase();
+
+            if (ans.equals("y")) {
+                isCompetitive = true;
+                break;
+            } else if (ans.equals("n")) {
+                isCompetitive = false;
+                break;
+            } else {
+                System.out.print("Enter only 'y' or 'n': ");
+            }
+        }
+
+        Member member = new Member(name, bDay, email, memberId, chosenCoach, chosenDisciplines, isCompetitive);
+        members.add(member);
+        cashier.registerMember(member);
+
+    }
+
+    private void showMembers() {
+        for (Member member : members) {
             System.out.println("\nName: "+ member.getName() + ", MemberID: " + member.getMemberId());
         }
-        System.out.print("\nEnter MemberID to edit: ");
+    }
 
+    private Member findMemberByID(){
         Member member = null;
         try
         {
@@ -236,6 +250,15 @@ public class Club
         {
             System.out.println("MemberID can only consist of numbers, please try again: ");
         }
+        return member;
+    }
+
+
+    public void editMember() {
+
+        System.out.print("\nEnter MemberID to edit: ");
+
+        Member member = findMemberByID();
 
         if (member == null) {
             System.out.println("No member found with that ID.");
@@ -337,4 +360,5 @@ public class Club
             System.out.println("No members are in debt");
         }
     }
+
 }

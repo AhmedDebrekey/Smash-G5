@@ -11,7 +11,9 @@ public class Member extends Person
     private boolean active;
 
     private EnumSet<Discipline> disciplines;
+
     private boolean competitive;
+    private EnumMap<Discipline, Integer> results;
 
     public Member(){}
 
@@ -23,6 +25,12 @@ public class Member extends Person
         this.active = true;
         this.disciplines = disciplines;
         this.competitive = competitive;
+
+        this.results = new EnumMap<>(Discipline.class);
+
+        for (Discipline d : disciplines) {
+            this.results.put(d, 0);
+        }
     }
 
     public int getMemberId()
@@ -102,5 +110,17 @@ public class Member extends Person
         this.disciplines = disciplines;
     }
 
+    public void addResult(Discipline discipline, int value) {
+        if (!disciplines.contains(discipline)) {
+            System.out.println("Member is not registered for discipline " + discipline);
+            return;
+        }
+
+        results.put(discipline, value);
+    }
+
+    public int getResult(Discipline discipline) {
+        return results.getOrDefault(discipline, 0);
+    }
 
 }

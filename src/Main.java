@@ -9,6 +9,8 @@ public class Main {
 
         Club smash = new Club("Smash", "Guldbergsgade 29N");
 
+        smash.addDataChangeListener(new AutoSaveListener(smash, "Smash_Data.txt"));
+
         Coach johan = new Coach("Johan Hansen", 19880713, "Johanhansen@gmail.dk");
         Coach NotJohan = new Coach("Not Johan Hansen", 19880713, "Johanhansen@gmail.dk");
 
@@ -59,7 +61,7 @@ public class Main {
                     smash.editMember();
                 }
                 case "3"  -> {
-                    System.out.println("\n>>> Register Tournamet... ");
+                    System.out.println("\n>>> Register Tournament... ");
                     smash.registerTournament();
                 }
                 case "4" -> {
@@ -71,9 +73,9 @@ public class Main {
                     smash.paymentOverview();
                 }
                 case "6" -> {
-                    System.out.println("\n>>> Saving data... ");
-                    smash.saveDataToFile("Smash_Data.txt");
+                    System.out.println("\n>>> Saving data... is done automatically after any change");
                     // TODO: Save the data
+                    smash.notifyDataChanged();
                 }
 
                 case "7" -> {

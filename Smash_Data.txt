@@ -1,0 +1,17 @@
+[Smash]
+Smash;Guldbergsgade 29N
+
+[Member]
+Mattias;19990101;test@smash.dk;1;Johan Hansen;[SINGLE, DOUBLE];true;true;0;0;0;
+[Member]
+Gustav;19990101;test@smash.dk;2;Johan Hansen;[SINGLE, DOUBLE];true;true;0;0;0;
+[Member]
+Liam;20000315;liam@smash.dk;3;Johan Hansen;[SINGLE, DOUBLE];true;true;0;0;0;
+[Member]
+Fuck Sofia;19981222;KillSofia@gmail.comeon;4;Not Johan Hansen;[DOUBLE, MIXED_DOUBLE];false;true;0;0;0;
+[Member]
+Noah;19970509;noah@smash.dk;5;Johan Hansen;[SINGLE, DOUBLE];true;true;0;0;0;
+[Member]
+Freja;20010130;freja@smash.dk;6;Johan Hansen;[SINGLE, DOUBLE];true;true;0;0;0;
+[Member]
+Oliver;19981111;oliver@smash.dk;7;Johan Hansen;[SINGLE, DOUBLE];true;true;0;0;0;

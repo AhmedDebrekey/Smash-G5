@@ -49,7 +49,7 @@ public class Date
 
     public boolean valid()
     {
-        if (getDate() < 17000301)
+        if (getDate() < 17000301 || getDate() > 99999999)
             return false;
         if (getMonth() < 1 || getMonth() > 12)
             return false;

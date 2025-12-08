@@ -64,7 +64,7 @@ public class InputHelpers {
         }
     }
 
-    static public int ReadBirthDay(String Message, String ErrorMessage) {
+    static public int ReadDate(String Message, String ErrorMessage) {
         while (true) {
             System.out.print(Message);
             int value = scanner.nextInt();

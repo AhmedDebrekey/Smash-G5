@@ -7,13 +7,15 @@ public class Match {
     private List<Member> teamTwo;
     private Discipline discipline;
     private boolean isTournament;
+    private Date matchDate;
     private int teamOneScore;
     private int teamTwoScore;
 
-    public Match(List<Member> teamOne, List<Member> teamTwo, Discipline discipline, boolean isTournament, int teamOneScore, int teamTwoScore) {
+    public Match(List<Member> teamOne, List<Member> teamTwo, Discipline discipline, boolean isTournament, int teamOneScore, int teamTwoScore, int matchDate) {
         this.teamOne = teamOne;
         this.teamTwo = teamTwo;
         this.discipline = discipline;
+        this.matchDate = new Date(matchDate);
         this.isTournament = isTournament;
         this.teamOneScore = teamOneScore;
         this.teamTwoScore = teamTwoScore;
@@ -83,5 +85,10 @@ public class Match {
                 System.out.println(player.getName() + "\n");
             }
         }
+    }
+
+    public Date getMatchDate()
+    {
+        return matchDate;
     }
 }

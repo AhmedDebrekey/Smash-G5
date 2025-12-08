@@ -46,11 +46,10 @@ public class Main {
             System.out.println("1. Add member");
             System.out.println("2. Edit member");
             System.out.println("3. Register Tournament");
-            System.out.println("4. Show Ranking");
-            System.out.println("5. Show rankings");
-            System.out.println("6. Payment overview");
-            System.out.println("7. Save data");
-            System.out.println("8. Load data");
+            System.out.println("4. Show rankings");
+            System.out.println("5. Payment overview");
+            System.out.println("6. Save data");
+            System.out.println("7. Load data");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 

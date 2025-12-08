@@ -84,7 +84,7 @@ public class Club
 
         //Må kun indeholde 8 cifre.
         //lave som String.
-        int bDay = InputHelpers.ReadBirthDay(
+        int bDay = InputHelpers.ReadDate(
                 "\nPlease enter birthdate of member in the format YYYYMMDD: ",
                 "Invalid Date use YYYYMMDD.");
 
@@ -387,18 +387,32 @@ public class Club
         List<Member> teamTwo = new ArrayList<>();
         // ---- Name the Match ----
         String nameOfMatch = InputHelpers.ReadString("Enter the name of the match: ", "Enter a valid name");
+        //--- Date of Match ---
+        int date = InputHelpers.ReadDate(
+                "\nPlease enter the date of the match in the format 'YYYYMMDD': ",
+                "Invalid Date use YYYYMMDD.");
+        InputHelpers.ClearLine();
         // ---- Choose Disciplin ----
         Discipline chosenDisciplin = InputHelpers.ReadSingleDiscipline();
+        int teamOnePlayers;
+        int teamTwoPlayers;
+        if (chosenDisciplin == Discipline.SINGLE)
         // ---- Adding players ----
-        int teamOnePlayers = InputHelpers.ReadInteger(
-                "How many players in team one?",
-                "Enter a valid number");
+        {
+            teamOnePlayers = 1;
+            teamTwoPlayers = 1;
+        }
+        else
+        {
+            teamOnePlayers = 2;
+            teamTwoPlayers = 2;
+        }
         showMembers();
         for (int i = 0; i < teamOnePlayers; i++) {
             int playerID;
             while (true) {
                 playerID = InputHelpers.ReadInteger(
-                        "\nPlease enter member ID: ",
+                        "\nPlease enter member ID player nr. " + (i+1) + " in team one: ",
                         "Invalid ID, must only contain numbers."
                 );
 
@@ -417,20 +431,17 @@ public class Club
         }
 
 
-        int teamTwoPlayers = InputHelpers.ReadInteger(
-                "How many players in team two?",
-                "Enter a valid number");
+
 
         showMembers();
         for (int i = 0; i < teamTwoPlayers; i++) {
             int playerID;
             while (true) {
                 playerID = InputHelpers.ReadInteger(
-                        "\nPlease enter member ID: ",
+                        "\nPlease enter member ID player nr. " + (i+1) + " in team two: ",
                         "Invalid ID, must only contain numbers."
                 );
-
-                if (memberIdExists(playerID, members)) {
+                if (memberIdExists(playerID, members) && !memberIdExists(playerID, (ArrayList<Member>) teamOne)) {
                     break;
                 }
                 else{
@@ -448,7 +459,7 @@ public class Club
         int teamOneScore = InputHelpers.ReadInteger("Enter score for team one: ", "Enter a valid number");
         int teamTwoScore = InputHelpers.ReadInteger("Enter score for team two: ", "Enter a valid number");
 
-        Match match = new Match(teamOne, teamTwo, chosenDisciplin, true, teamOneScore, teamTwoScore);
+        Match match = new Match(teamOne, teamTwo, chosenDisciplin, true, teamOneScore, teamTwoScore, date);
         matches.put(match, nameOfMatch);
     }
 

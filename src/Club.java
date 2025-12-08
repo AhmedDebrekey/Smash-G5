@@ -1,3 +1,4 @@
+import ENUMS.AgeGroup;
 import ENUMS.Discipline;
 
 import java.io.FileWriter;
@@ -7,17 +8,14 @@ import java.util.*;
 
 public class Club
 {
-    private String name;
-    private String adress;
+    private final String name;
+    private final String adress;
     private int totalMembers;
     private ArrayList<Member> members = new ArrayList<>();
     private ArrayList<Coach> coaches = new ArrayList<>();
-    Scanner scanner = new Scanner(System.in);
     private Cashier cashier = new Cashier();
     private Map<Match, String> matches = new HashMap<>();
     private List<DataChangeListener> listeners = new ArrayList<>();
-
-    public Club(){}
 
     public Club(String name, String adress)
     {
@@ -55,6 +53,7 @@ public class Club
         members.add(member);
         totalMembers++;
         notifyDataChanged();
+        cashier.registerMember(member);
     }
 
     public void removeMember(Member member)
@@ -170,12 +169,11 @@ public class Club
         for (Member member : members) {
             if (member.getdiscipline().contains(discipline) && !otherMembers.contains(member)) {
                 hasPlayers = true;
-                System.out.println("\nName: "+ member.getName() + ", MemberID: " + member.getMemberId());
+                System.out.println("\nName: "+ member.getName() + ", MemberID: " + member.getMemberId() + " age group: " + member.getAgeGroup());
             }
         }
         return hasPlayers;
     }
-
 
     private Member findMemberByID() {
         while (true) {
@@ -205,8 +203,6 @@ public class Club
         System.out.println("No members in the club ahah losers...");
         return null;
     }
-
-
 
     public void editMember() {
         showMembers();
@@ -412,10 +408,22 @@ public class Club
                 teamTwo.add(player);
             }
         }
+        int teamOneScore = 0;
+        int teamTwoScore = 0;
 
-        // ---- Registering scores for teams ----
-        int teamOneScore = InputHelpers.ReadInteger("Enter score for team one: ", "Enter a valid number");
-        int teamTwoScore = InputHelpers.ReadInteger("Enter score for team two: ", "Enter a valid number");
+        while (true) {
+            // ---- Registering scores for teams ----
+            teamOneScore = InputHelpers.ReadInteger("Enter score for team one: ", "Enter a valid number");
+            teamTwoScore = InputHelpers.ReadInteger("Enter score for team two: ", "Enter a valid number");
+
+            if (ValidateTeamScore(teamOneScore, teamTwoScore)) {
+                break;
+            }
+            else  {
+                System.out.println("Invalid score for match. It is a best of 3. List of possible answers: 2-0, 2-1, 0-2, 1-2 type shit");
+            }
+        }
+
 
         Match match = new Match(teamOne, teamTwo, chosenDisciplin, true, teamOneScore, teamTwoScore, date);
         match.updateMatchPlayersScore();
@@ -423,6 +431,19 @@ public class Club
 
         notifyDataChanged();
 
+    }
+
+    private boolean ValidateTeamScore(int teamOneScore, int teamTwoScore) {
+        if (teamOneScore == 2 && (teamTwoScore == 0 || teamTwoScore == 1))
+        {
+            return true;
+        }
+        if (teamTwoScore == 2 && (teamOneScore == 0 || teamOneScore == 1))
+        {
+            return true;
+        }
+
+        return false; // bad input lmao
     }
 
     public void ShowMatchResults(){
@@ -444,33 +465,37 @@ public class Club
         selectedMatch.getKey().showWinners();
     }
 
-    public void saveDataToFile(String fileName)
-    {
-        try (FileWriter writer = new FileWriter(fileName))
-        {
-            writer.write("[Smash]\n");
-            writer.write(name + ";" + adress + "\n\n");
 
-            for (int i = 0; i < members.size(); i++)
-            {
-                Member member = members.get(i);
-                writer.write("[Member]\n");
-                writer.write(member.getName() + ";" +
-                        member.getbDay().getDate() + ";" +
-                        member.getEmail() + ";" +
-                        member.getMemberId() + ";" +
-                        member.getCoach().getName() + ";" +
-                        member.getDisciplines() + ";" +
-                        member.isCompetitive() + ";" +
-                        member.isActive() + ";" +
-                        member.getResult(Discipline.SINGLE) + ";" +
-                        member.getResult(Discipline.DOUBLE) + ";" +
-                        member.getResult(Discipline.MIXED_DOUBLE) + ";\n");
-            }
+
+    public void ShowMembersResults(){
+        for (Discipline d : Discipline.values()) {
+            List<Member> sortedJuniorMembers = members.stream()
+                    .filter(m -> m.getdiscipline().contains(d) && m.getAgeGroup() == AgeGroup.JUNIOR && m.isCompetitive())
+                    .sorted(Comparator.comparingInt(m -> m.getResult(d)))
+                    .toList()
+                    .reversed();
+
+            List<Member> sortedSeniorMembers = members.stream()
+                    .filter(m -> m.getdiscipline().contains(d) && m.getAgeGroup() == AgeGroup.SENIOR && m.isCompetitive())
+                    .sorted(Comparator.comparingInt(m -> m.getResult(d)))
+                    .toList()
+                    .reversed();
+
+            System.out.println("Results for Juniors in " + d + ":");
+            printRankings(d, sortedJuniorMembers);
+            System.out.println("Results for Seniors in " + d + ":");
+            printRankings(d, sortedSeniorMembers);
         }
-        catch (IOException e)
-        {
-            System.out.println("There was error writing to the file: " + e.getMessage());
+    }
+
+    private static void printRankings(Discipline d, List<Member> sortedMembers) {
+        int index = 1;
+        for (Member m : sortedMembers) {
+            System.out.println(index + ". " + m.getName() + " - " + m.getResult(d));
+            if (index == 5) {
+                break;
+            }
+            index++;
         }
     }
 }

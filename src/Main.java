@@ -15,28 +15,21 @@ public class Main {
         smash.addCoach(johan);
         smash.addCoach(NotJohan);
 
-        Member testMember = new Member(
-                "Mattias",
-                19990101,
-                "test@smash.dk",
-                1,
-                johan,
-                EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE),
-                true
-        );
-
-        Member testMember2 = new Member(
-                "Gustav",
-                19990101,
-                "test@smash.dk",
-                2,
-                johan,
-                EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE),
-                true
-        );
+        Member testMember = new Member("Mattias", 19990101, "test@smash.dk", 1, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
+        Member testMember2 = new Member("Gustav", 19990101, "test@smash.dk", 2, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
+        Member testMember3 = new Member("Liam", 20000315, "liam@smash.dk", 3, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
+        Member testMember4 = new Member("Sofia", 19981222, "sofia@smash.dk", 4, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
+        Member testMember5 = new Member("Noah", 19970509, "noah@smash.dk", 5, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
+        Member testMember6 = new Member("Freja", 20010130, "freja@smash.dk", 6, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
+        Member testMember7 = new Member("Oliver", 19981111, "oliver@smash.dk", 7, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
 
         smash.addMember(testMember);
         smash.addMember(testMember2);
+        smash.addMember(testMember3);
+        smash.addMember(testMember4);
+        smash.addMember(testMember5);
+        smash.addMember(testMember6);
+        smash.addMember(testMember7);
 
         Scanner input = new Scanner(System.in);
         boolean running = true;

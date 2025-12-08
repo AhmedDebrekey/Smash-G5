@@ -1,5 +1,6 @@
 import ENUMS.Discipline;
 
+import java.lang.classfile.MethodBuilder;
 import java.util.List;
 
 public class Match {
@@ -84,6 +85,18 @@ public class Match {
             {
                 System.out.println(player.getName() + "\n");
             }
+        }
+    }
+
+    public void updateMatchPlayersScore(){
+        for (Member player : teamOne)
+        {
+            player.addResult(discipline, teamOneScore);
+        }
+
+        for (Member player : teamTwo)
+        {
+            player.addResult(discipline, teamTwoScore);
         }
     }
 

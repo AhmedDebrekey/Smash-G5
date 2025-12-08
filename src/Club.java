@@ -145,6 +145,18 @@ public class Club
         }
     }
 
+    private boolean showMembersInDisciplinationforkanation(List<Member> otherMembers, Discipline discipline) {
+        boolean hasPlayers = false;
+        for (Member member : members) {
+            if (member.getdiscipline().contains(discipline) && !otherMembers.contains(member)) {
+                hasPlayers = true;
+                System.out.println("\nName: "+ member.getName() + ", MemberID: " + member.getMemberId());
+            }
+        }
+        return hasPlayers;
+    }
+
+
     private Member findMemberByID() {
         while (true) {
             int id = InputHelpers.ReadInteger(
@@ -300,94 +312,12 @@ public class Club
         }
     }
 
-    public void registerTournamentResults (){
-        showMembers();
-        Member member = findMemberByID();
-        if (member == null) {
-            System.out.println("No member found with that ID.");
-            return;
-        }
-        if (!member.isCompetitive()) {
-            System.out.println("Member " + member.getName() + " is not a competitive player.");
-            return;
-        }
-        EnumSet<Discipline> memberDisciplines = member.getDisciplines();
-
-        if (memberDisciplines.isEmpty()) {
-            System.out.println("Member is not registered for any disciplines.");
-            return;
-        }
-
-        System.out.println("\nSelect discipline:");
-        List<Discipline> disciplineList = new ArrayList<>(memberDisciplines);
-        for (int i = 0; i < disciplineList.size(); i++) {
-            System.out.println((i + 1) + ". " + disciplineList.get(i));
-        }
-
-        int choice;
-        while (true) {
-            System.out.println("Enter choice (1-" + disciplineList.size() + "): ");
-            choice = scanner.nextInt();
-            if (choice >= 1 && choice <= disciplineList.size()) {
-                break;
-            } else {
-                System.out.println("Please choose a valid number between 1 and " + disciplineList.size());
-            }
-        }
-
-        Discipline chosenDiscipline = disciplineList.get(choice - 1);
-        System.out.println("Enter Result");
-        int result = scanner.nextInt();
-        member.addResult(chosenDiscipline, result);
-
-        System.out.println("Result registered: " + member.getName() +
-                " now has " + member.getResult(chosenDiscipline) +
-                " in " + chosenDiscipline + ".");
-    }
-
-    public void seeRankings(){
-        for (Discipline d : Discipline.values())
-        {
-            List<Member> playersInDiscipline = new ArrayList<>();
-
-            for (Member m : members)
-            {
-                if (m.isCompetitive() && m.getdiscipline().contains(d))
-                {
-                    playersInDiscipline.add(m);
-                }
-            }
-
-            playersInDiscipline.sort(new Comparator<Member>() {
-                @Override
-                public int compare(Member m1, Member m2) {
-                    // sort descending (highest score first)
-                    return Integer.compare(
-                            m2.getResult(d),
-                            m1.getResult(d)
-                    );
-                }
-            });
-
-            System.out.println("\nRanking for discipline: " + d);
-
-            for (int i = 0; i < playersInDiscipline.size(); i++) {
-                Member m = playersInDiscipline.get(i);
-                System.out.println((i + 1) + ". " + m.getName() + " - " + m.getResult(d) + " points");
-            }
-
-            if (playersInDiscipline.isEmpty()) {
-                System.out.println("No competitive players in this discipline yet.");
-            }
-        }
-    }
-
     public void registerTournament() {
-        List<Member> teamOne = new ArrayList<>();
+        ArrayList<Member> teamOne = new ArrayList<>();
         List<Member> teamTwo = new ArrayList<>();
         // ---- Name the Match ----
         String nameOfMatch = InputHelpers.ReadString("Enter the name of the match: ", "Enter a valid name");
-        //--- Date of Match ---
+        // ---- Date of Match ----
         int date = InputHelpers.ReadDate(
                 "\nPlease enter the date of the match in the format 'YYYYMMDD': ",
                 "Invalid Date use YYYYMMDD.");
@@ -407,7 +337,12 @@ public class Club
             teamOnePlayers = 2;
             teamTwoPlayers = 2;
         }
-        showMembers();
+        boolean hasPlayers = showMembersInDisciplinationforkanation(teamOne, chosenDisciplin);
+        if (!hasPlayers)
+        {
+            System.out.println("NO PLAYERS IN THIS DISCIPLINE");
+            return;
+        }
         for (int i = 0; i < teamOnePlayers; i++) {
             int playerID;
             while (true) {
@@ -430,10 +365,12 @@ public class Club
             }
         }
 
-
-
-
-        showMembers();
+        hasPlayers = showMembersInDisciplinationforkanation(teamOne, chosenDisciplin);
+        if (!hasPlayers)
+        {
+            System.out.println("NO PLAYERS IN THIS DISCIPLINE");
+            return;
+        }
         for (int i = 0; i < teamTwoPlayers; i++) {
             int playerID;
             while (true) {
@@ -441,7 +378,7 @@ public class Club
                         "\nPlease enter member ID player nr. " + (i+1) + " in team two: ",
                         "Invalid ID, must only contain numbers."
                 );
-                if (memberIdExists(playerID, members) && !memberIdExists(playerID, (ArrayList<Member>) teamOne)) {
+                if (memberIdExists(playerID, members) && !memberIdExists(playerID, teamOne)) {
                     break;
                 }
                 else{
@@ -460,6 +397,7 @@ public class Club
         int teamTwoScore = InputHelpers.ReadInteger("Enter score for team two: ", "Enter a valid number");
 
         Match match = new Match(teamOne, teamTwo, chosenDisciplin, true, teamOneScore, teamTwoScore, date);
+        match.updateMatchPlayersScore();
         matches.put(match, nameOfMatch);
     }
 

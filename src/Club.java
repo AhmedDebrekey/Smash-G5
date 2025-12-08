@@ -289,7 +289,7 @@ public class Club
         {
             if (cashier.isInDebt(m))
             {
-                System.out.println("- " + m.getName() + " (ID: " + m.getMemberId() + ")");
+                System.out.println(m.getName() + " (ID: " + m.getMemberId() + ")");
                 anyInDebt = true;
             }
         }

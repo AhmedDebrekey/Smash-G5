@@ -15,6 +15,8 @@ public class Club
     Scanner scanner = new Scanner(System.in);
     private Cashier cashier = new Cashier();
     private Map<Match, String> matches = new HashMap<>();
+    private List<DataChangeListener> listeners = new ArrayList<>();
+
     public Club(){}
 
     public Club(String name, String adress)
@@ -22,6 +24,20 @@ public class Club
         this.name = name;
         this.adress = adress;
         totalMembers = 0;
+    }
+
+    public void addDataChangeListener(DataChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeDataChangeListener(DataChangeListener listener) {
+        listeners.remove(listener);
+    }
+
+    public void notifyDataChanged() {
+        for (DataChangeListener listener : listeners) {
+            listener.onDataChanged();
+        }
     }
 
     public String getName()
@@ -38,6 +54,7 @@ public class Club
     {
         members.add(member);
         totalMembers++;
+        notifyDataChanged();
     }
 
     public void removeMember(Member member)
@@ -137,7 +154,7 @@ public class Club
 
 
         Member member = new Member(name, bDay, email, memberId, chosenCoach, chosenDisciplines, isCompetitive);
-        members.add(member);
+        addMember(member);
         cashier.registerMember(member);
 
     }
@@ -283,6 +300,7 @@ public class Club
         member.setCompetitive(isCompetitive);
 
         System.out.println("\nMember updated.");
+        notifyDataChanged();
         cashier.registerMember(member);
     }
 
@@ -402,6 +420,9 @@ public class Club
         Match match = new Match(teamOne, teamTwo, chosenDisciplin, true, teamOneScore, teamTwoScore, date);
         match.updateMatchPlayersScore();
         matches.put(match, nameOfMatch);
+
+        notifyDataChanged();
+
     }
 
     public void ShowMatchResults(){

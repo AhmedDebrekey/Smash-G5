@@ -72,6 +72,7 @@ public class Main {
                 }
                 case "6" -> {
                     System.out.println("\n>>> Saving data... ");
+                    smash.saveDataToFile("Smash_Data.txt");
                     // TODO: Save the data
                 }
 

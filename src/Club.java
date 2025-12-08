@@ -1,5 +1,8 @@
 import ENUMS.Discipline;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 public class Club
@@ -418,5 +421,35 @@ public class Club
         System.out.println("Team one score: " + selectedMatch.getKey().getTeamOneScore());
         System.out.println("Team two score: " + selectedMatch.getKey().getTeamTwoScore());
         selectedMatch.getKey().showWinners();
+    }
+
+    public void saveDataToFile(String fileName)
+    {
+        try (FileWriter writer = new FileWriter(fileName))
+        {
+            writer.write("[Smash]\n");
+            writer.write(name + ";" + adress + "\n\n");
+
+            for (int i = 0; i < members.size(); i++)
+            {
+                Member member = members.get(i);
+                writer.write("[Member]\n");
+                writer.write(member.getName() + ";" +
+                        member.getbDay().getDate() + ";" +
+                        member.getEmail() + ";" +
+                        member.getMemberId() + ";" +
+                        member.getCoach().getName() + ";" +
+                        member.getDisciplines() + ";" +
+                        member.isCompetitive() + ";" +
+                        member.isActive() + ";" +
+                        member.getResult(Discipline.SINGLE) + ";" +
+                        member.getResult(Discipline.DOUBLE) + ";" +
+                        member.getResult(Discipline.MIXED_DOUBLE) + ";\n");
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("There was error writing to the file: " + e.getMessage());
+        }
     }
 }

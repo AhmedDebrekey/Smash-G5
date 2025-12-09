@@ -1,17 +1,20 @@
-public class Payment {
-    private int year;
+public class Payment
+{
+    private Date date;
     private int amount;
     private boolean paid;
 
-    public Payment (int year, int amount)
+    public Payment(){}
+
+    public Payment (int date, int amount)
     {
-        this.year = year;
+        this.date = new Date(date);
         this.amount = amount;
         this.paid = false;
     }
-    public int getYear()
+    public Date getDate()
     {
-        return year;
+        return date;
     }
 
     public int getAmount()

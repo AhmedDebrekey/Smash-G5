@@ -9,7 +9,9 @@ public class Main {
 
         Club smash = new Club("Smash", "Guldbergsgade 29N");
 
-        smash.addDataChangeListener(new AutoSaveListener(smash, "Smash_Data.txt"));
+        Cashier cashier = smash.getCashier();
+
+        smash.addDataChangeListener(new AutoSaveListener (smash, "Smash_Data.txt", cashier));
 
         Coach johan = new Coach("Johan Hansen", 19880713, "Johanhansen@gmail.dk");
         Coach NotJohan = new Coach("Not Johan Hansen", 19880713, "Johanhansen@gmail.dk");
@@ -45,8 +47,9 @@ public class Main {
             System.out.println("4. Show Match Rankings");
             System.out.println("5. Show Members Rankings");
             System.out.println("6. Payment overview");
-            System.out.println("7. Save data");
-            System.out.println("8. Load data");
+            System.out.println("7. Mark member as paid");
+            System.out.println("8. Save data");
+            System.out.println("9. Load data");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -79,11 +82,15 @@ public class Main {
                     smash.paymentOverview();
                 }
                 case "7" -> {
+                    System.out.println("\n>>> Showing members...");
+                    smash.setMemberAsPaid();
+                }
+                case "8" -> {
                     System.out.println("\n>>> Saving data... is done automatically after any change");
                     // TODO: Save the data
                     smash.notifyDataChanged();
                 }
-                case "8" -> {
+                case "9" -> {
                     System.out.println("\n>>> Loading data... ");
                     // TODO: Load Data
                 }

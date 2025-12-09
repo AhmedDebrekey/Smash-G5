@@ -38,6 +38,11 @@ public class Club
         }
     }
 
+    public Cashier getCashier()
+    {
+        return cashier;
+    }
+
     public String getName()
     {
         return name;
@@ -52,8 +57,8 @@ public class Club
     {
         members.add(member);
         totalMembers++;
-        notifyDataChanged();
         cashier.registerMember(member);
+        notifyDataChanged();
     }
 
     public void removeMember(Member member)
@@ -79,6 +84,11 @@ public class Club
     public ArrayList<Coach> getCoaches()
     {
         return coaches;
+    }
+
+    public Map <Match, String > getMatches()
+    {
+        return matches;
     }
 
     private boolean memberIdExists(int memberId, ArrayList<Member> members)
@@ -154,8 +164,6 @@ public class Club
 
         Member member = new Member(name, bDay, email, memberId, chosenCoach, chosenDisciplines, isCompetitive);
         addMember(member);
-        cashier.registerMember(member);
-
     }
 
     private void showMembers() {
@@ -200,7 +208,7 @@ public class Club
                     return m;
             }
         }
-        System.out.println("No members in the club ahah losers...");
+        System.out.println("No members in the club...");
         return null;
     }
 
@@ -297,18 +305,19 @@ public class Club
 
         System.out.println("\nMember updated.");
         notifyDataChanged();
-        cashier.registerMember(member);
     }
 
 
     public void paymentOverview(){
+        cashier.updatePayments();
         System.out.println("\n ----PAYMENT OVERVIEW----");
 
         System.out.println("\n --Members and their fees--");
         for (Member m : members)
         {
             Payment p = cashier.getPayment(m);
-            System.out.println(m.getName() + " (ID: " + m.getMemberId() + " ), Fee: " + p.getAmount() + " kr., Paid: " + p.isPaid());
+            String paidText = p.isPaid() ? "Yes" : "No";
+            System.out.println(m.getName() + " (ID: " + m.getMemberId() + " ), Fee: " + p.getAmount() + " kr., Paid: " + paidText + ", Charge Date: " + p.getDate().getDate());
         }
 
         System.out.println("\n --Members in debt--");
@@ -327,6 +336,43 @@ public class Club
         {
             System.out.println("No members are in debt");
         }
+    }
+
+    public void setMemberAsPaid()
+    {
+        boolean inDebt = false;
+        System.out.println("\n--- Members with unpaid fees ---\n");
+
+        for (int i = 0; i < members.size(); i++)
+        {
+            Member member = members.get(i);
+            Payment payment = cashier.getPayment(member);
+            if (!payment.isPaid())
+            {
+                System.out.println("Name: " + member.getName() + ", ID: " + member.getMemberId());
+                inDebt = true;
+            }
+        }
+
+        if (!inDebt)
+        {
+            System.out.println("No members in debt!");
+            return;
+        }
+
+        Member member = findMemberByID();
+
+        Payment payment = cashier.getPayment(member);
+
+        if (payment == null)
+        {
+            System.out.println("No payment found for this member.");
+            return;
+        }
+
+        payment.setPaid(true);
+        notifyDataChanged();
+        System.out.println(member.getName() + " has now paid the fee!");
     }
 
     public void registerTournament() {
@@ -354,7 +400,7 @@ public class Club
             teamOnePlayers = 2;
             teamTwoPlayers = 2;
         }
-        boolean hasPlayers = showMembersInDisciplinationforkanation(teamOne, chosenDisciplin);
+        boolean hasPlayers = showEligibleMembers(teamOne, chosenDisciplin);
         if (!hasPlayers)
         {
             System.out.println("NO PLAYERS IN THIS DISCIPLINE");
@@ -382,7 +428,7 @@ public class Club
             }
         }
 
-        hasPlayers = showMembersInDisciplinationforkanation(teamOne, chosenDisciplin);
+        hasPlayers = showEligibleMembers(teamOne, chosenDisciplin);
         if (!hasPlayers)
         {
             System.out.println("NO PLAYERS IN THIS DISCIPLINE");
@@ -420,7 +466,7 @@ public class Club
                 break;
             }
             else  {
-                System.out.println("Invalid score for match. It is a best of 3. List of possible answers: 2-0, 2-1, 0-2, 1-2 type shit");
+                System.out.println("Invalid score for match. It is a best of 3. List of possible answers: 2-0, 2-1, 0-2, 1-2.");
             }
         }
 
@@ -434,6 +480,7 @@ public class Club
     }
 
     private boolean ValidateTeamScore(int teamOneScore, int teamTwoScore) {
+
         if (teamOneScore == 2 && (teamTwoScore == 0 || teamTwoScore == 1))
         {
             return true;
@@ -497,5 +544,25 @@ public class Club
             }
             index++;
         }
+    }
+
+    private boolean showEligibleMembers(List<Member> otherMembers, Discipline discipline) {
+        boolean eligibleMember = false;
+
+        for (int i = 0; i < members.size(); i++) {
+            Member m = members.get(i);
+
+            if (m.getdiscipline().contains(discipline) &&
+                    m.isCompetitive() &&
+                    m.isActive() &&
+                    !otherMembers.contains(m)) {
+
+                eligibleMember = true;
+                System.out.println("\nName: "+ m.getName() +
+                        ", MemberID: " + m.getMemberId() +
+                        ", Age Group: " + m.getAgeGroup());
+            }
+        }
+        return eligibleMember;
     }
 }

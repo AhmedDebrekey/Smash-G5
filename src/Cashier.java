@@ -1,3 +1,5 @@
+import ENUMS.AgeGroup;
+
 import java.util.HashMap;
 
 public class Cashier {
@@ -19,11 +21,10 @@ public class Cashier {
         {
             return 250; // passivt medlemskab
         }
-
-        if (age < 18)
+        if (member.getAgeGroup() == AgeGroup.JUNIOR)
         {
             return 800; // junior
-        } else if (age >= 60)
+        } else if (member.getAgeGroup() == AgeGroup.SENIOR && age > 60)
         {
             return (int) (1500 * 0.75); // Senior med 25%
         } else

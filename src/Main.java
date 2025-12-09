@@ -17,10 +17,10 @@ public class Main {
         smash.addCoach(johan);
         smash.addCoach(NotJohan);
 
-        Member testMember = new Member("Mattias", 19990101, "test@smash.dk", 1, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
-        Member testMember2 = new Member("Gustav", 19990101, "test@smash.dk", 2, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
-        Member testMember3 = new Member("Liam", 20000315, "liam@smash.dk", 3, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
-        Member testMember4 = new Member("Sofia", 19981222, "sofia@smash.dk", 4, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
+        Member testMember = new Member("Mattias", 20240101, "test@smash.dk", 1, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
+        Member testMember2 = new Member("Gustav", 20220101, "test@smash.dk", 2, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
+        Member testMember3 = new Member("Liam", 19090315, "liam@smash.dk", 3, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
+        Member testMember4 = new Member("Samin", 20251209, "samin@smash.dk", 4, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
         Member testMember5 = new Member("Noah", 19970509, "noah@smash.dk", 5, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
         Member testMember6 = new Member("Freja", 20010130, "freja@smash.dk", 6, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
         Member testMember7 = new Member("Oliver", 19981111, "oliver@smash.dk", 7, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
@@ -33,6 +33,7 @@ public class Main {
         smash.addMember(testMember6);
         smash.addMember(testMember7);
 
+
         Scanner input = new Scanner(System.in);
         boolean running = true;
 
@@ -41,10 +42,11 @@ public class Main {
             System.out.println("1. Add member");
             System.out.println("2. Edit member");
             System.out.println("3. Register Tournament");
-            System.out.println("4. Show rankings");
-            System.out.println("5. Payment overview");
-            System.out.println("6. Save data");
-            System.out.println("7. Load data");
+            System.out.println("4. Show Match Rankings");
+            System.out.println("5. Show Members Rankings");
+            System.out.println("6. Payment overview");
+            System.out.println("7. Save data");
+            System.out.println("8. Load data");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -69,16 +71,19 @@ public class Main {
                     smash.ShowMatchResults();
                 }
                 case "5"  -> {
+                    System.out.println("\n>>> Showing Members Rankings... ");
+                    smash.ShowMembersResults();
+                }
+                case "6"  -> {
                     System.out.println("\n>>> Showing payment overview...");
                     smash.paymentOverview();
                 }
-                case "6" -> {
+                case "7" -> {
                     System.out.println("\n>>> Saving data... is done automatically after any change");
                     // TODO: Save the data
                     smash.notifyDataChanged();
                 }
-
-                case "7" -> {
+                case "8" -> {
                     System.out.println("\n>>> Loading data... ");
                     // TODO: Load Data
                 }

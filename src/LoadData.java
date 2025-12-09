@@ -47,7 +47,7 @@ public class LoadData
         {
 
             String line;
-            int section = 0; // 1 = Member, 2 = Coach, 3 = Match
+            int section = 0;
 
             while ((line = br.readLine()) != null)
             {

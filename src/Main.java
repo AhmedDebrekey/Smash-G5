@@ -11,30 +11,14 @@ public class Main {
 
         Cashier cashier = smash.getCashier();
 
+        LoadData.loadFromFile("Smash_Data.txt", smash);
+
         smash.addDataChangeListener(new AutoSaveListener (smash, "Smash_Data.txt", cashier));
 
         Coach johan = new Coach("Johan Hansen", 19880713, "Johanhansen@gmail.dk");
         Coach NotJohan = new Coach("Not Johan Hansen", 19880713, "Johanhansen@gmail.dk");
-
         smash.addCoach(johan);
         smash.addCoach(NotJohan);
-
-        Member testMember = new Member("Mattias", 20240101, "test@smash.dk", 1, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
-        Member testMember2 = new Member("Gustav", 20220101, "test@smash.dk", 2, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
-        Member testMember3 = new Member("Liam", 19090315, "liam@smash.dk", 3, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
-        Member testMember4 = new Member("Samin", 20251209, "samin@smash.dk", 4, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
-        Member testMember5 = new Member("Noah", 19970509, "noah@smash.dk", 5, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
-        Member testMember6 = new Member("Freja", 20010130, "freja@smash.dk", 6, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
-        Member testMember7 = new Member("Oliver", 19981111, "oliver@smash.dk", 7, johan, EnumSet.of(Discipline.SINGLE, Discipline.DOUBLE), true);
-
-        smash.addMember(testMember);
-        smash.addMember(testMember2);
-        smash.addMember(testMember3);
-        smash.addMember(testMember4);
-        smash.addMember(testMember5);
-        smash.addMember(testMember6);
-        smash.addMember(testMember7);
-
 
         Scanner input = new Scanner(System.in);
         boolean running = true;
@@ -49,7 +33,6 @@ public class Main {
             System.out.println("6. Payment overview");
             System.out.println("7. Mark member as paid");
             System.out.println("8. Save data");
-            System.out.println("9. Load data");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -89,10 +72,6 @@ public class Main {
                     System.out.println("\n>>> Saving data... is done automatically after any change");
                     // TODO: Save the data
                     smash.notifyDataChanged();
-                }
-                case "9" -> {
-                    System.out.println("\n>>> Loading data... ");
-                    // TODO: Load Data
                 }
                 case "0" -> {
                     System.out.println("\nExiting program...");

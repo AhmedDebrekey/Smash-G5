@@ -172,6 +172,11 @@ public class Club
         }
     }
 
+    public void setMemberId(int memberId)
+    {
+        memberId = memberId;
+    }
+
     private boolean showMembersInDisciplinationforkanation(List<Member> otherMembers, Discipline discipline) {
         boolean hasPlayers = false;
         for (Member member : members) {
@@ -183,7 +188,7 @@ public class Club
         return hasPlayers;
     }
 
-    private Member findMemberByID() {
+    public Member findMemberByID() {
         while (true) {
             int id = InputHelpers.ReadInteger(
                     "\nEnter MemberID: ",
@@ -200,7 +205,7 @@ public class Club
         }
     }
 
-    private Member findMemberByID(int memberID){
+    public Member findMemberByID(int memberID){
         for (Member m : members)
         {
             if (m.getMemberId() == memberID)
@@ -564,5 +569,13 @@ public class Club
             }
         }
         return eligibleMember;
+    }
+
+    public void clearDataChangeListeners()
+    {
+        if (this.listeners != null)
+        {
+            this.listeners.clear();
+        }
     }
 }

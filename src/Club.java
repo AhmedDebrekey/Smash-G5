@@ -172,11 +172,6 @@ public class Club
         }
     }
 
-    public void setMemberId(int memberId)
-    {
-        memberId = memberId;
-    }
-
     private boolean showMembersInDisciplinationforkanation(List<Member> otherMembers, Discipline discipline) {
         boolean hasPlayers = false;
         for (Member member : members) {
@@ -578,13 +573,5 @@ public class Club
             }
         }
         return eligibleMember;
-    }
-
-    public void clearDataChangeListeners()
-    {
-        if (this.listeners != null)
-        {
-            this.listeners.clear();
-        }
     }
 }

@@ -27,14 +27,14 @@ public class Main {
 
         while (running) {
             System.out.println("\n===== SMASH CLUB MANAGEMENT SYSTEM =====");
-            System.out.println("1. Add member");
-            System.out.println("2. Edit member");
-            System.out.println("3. Register Tournament");
+            System.out.println("1. Add Member");
+            System.out.println("2. Edit Member");
+            System.out.println("3. Register Match");
             System.out.println("4. Show Match Rankings");
             System.out.println("5. Show Members Rankings");
-            System.out.println("6. Payment overview");
-            System.out.println("7. Mark member as paid");
-            System.out.println("8. Save data");
+            System.out.println("6. Payment Overview");
+            System.out.println("7. Mark Member as Paid");
+            System.out.println("8. Save Data");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 

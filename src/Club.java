@@ -318,12 +318,21 @@ public class Club
         System.out.println("\n ----PAYMENT OVERVIEW----");
 
         System.out.println("\n --Members and their fees--");
+        // ---------- Member fees (null-safe) ----------
         for (Member m : members)
         {
             Payment p = cashier.getPayment(m);
+
+            if (p == null) {
+                // No payment record for this member
+                System.out.println(m.getName() + " (ID: " + m.getMemberId() + ") - No payment record");
+                continue;
+            }
+
             String paidText = p.isPaid() ? "Yes" : "No";
-            System.out.println(m.getName() + " (ID: " + m.getMemberId() + " ), Fee: " + p.getAmount() + " kr., Paid: " + paidText + ", Charge Date: " + p.getDate().getDate());
+            System.out.println(m.getName() + " (ID: " + m.getMemberId() + ") " + "Amount:" + p.getAmount() + " - Paid: " + paidText + ", Charge Date: " + p.getDate().getDate());
         }
+
 
         System.out.println("\n --Members in debt--");
         boolean anyInDebt = false;

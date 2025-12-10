@@ -11,14 +11,16 @@ public class Main {
 
         Cashier cashier = smash.getCashier();
 
-        LoadData.loadFromFile("Smash_Data.txt", smash);
-
-        smash.addDataChangeListener(new AutoSaveListener (smash, "Smash_Data.txt", cashier));
-
         Coach johan = new Coach("Johan Hansen", 19880713, "Johanhansen@gmail.dk");
         Coach NotJohan = new Coach("Not Johan Hansen", 19880713, "Johanhansen@gmail.dk");
         smash.addCoach(johan);
         smash.addCoach(NotJohan);
+
+        LoadData.loadFromFile("Smash_Data.txt", smash, cashier);
+
+        smash.addDataChangeListener(new AutoSaveListener (smash, "Smash_Data.txt", cashier));
+
+
 
         Scanner input = new Scanner(System.in);
         boolean running = true;

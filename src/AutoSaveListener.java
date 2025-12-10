@@ -41,9 +41,12 @@ public class AutoSaveListener implements DataChangeListener{
                         member.getResult(Discipline.DOUBLE) + ";" +
                         member.getResult(Discipline.MIXED_DOUBLE) + ";");
                         Payment p = cashier.getPayment(member);
-                        writer.write(p.getAmount() + ";" +
+                        if (p != null)
+                        {
+                            writer.write(p.getAmount() + ";" +
                                 p.getDate().getDate() + ";" +
                                 p.isPaid() + ";\n\n");
+                        }
             }
             //Name;bDay;email;memberId;coachname;disciplines;competetiveornot;RegistrationDate;activeornot;
             //SingleResults;DoubleResults;MixedDoubleResults;paymentAmount;paymentYear;PaymentStatus;
@@ -66,7 +69,7 @@ public class AutoSaveListener implements DataChangeListener{
                     teamTwoIDs = teamTwoIDs.substring(0, teamTwoIDs.length() - 1);
 
                 writer.write("[Match]\n");
-                writer.write(match.getDiscipline() + ";" +
+                writer.write(matchName + ";" + match.getDiscipline() + ";" +
                         match.isTournament() + ";" +
                         match.getMatchDate().getDate() + ";" +
                         match.getTeamOneScore() + ";" +

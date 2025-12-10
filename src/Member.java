@@ -20,10 +20,18 @@ public class Member extends Person {
     public Member(String name, int bDay, String email, int memberId, Coach coach, EnumSet<Discipline> disciplines, boolean competitive) {
         super(name, bDay, email);
         this.memberId = memberId;
-        this.coach = coach;
         this.active = true;
         this.disciplines = disciplines;
         this.competitive = competitive;
+
+        if (coach != null)
+        {
+            this.coach = coach;
+        }
+        else
+        {
+            this.coach = null;
+        }
 
         this.results = new EnumMap<>(Discipline.class);
 

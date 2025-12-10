@@ -65,4 +65,9 @@ public class Cashier {
         }
     }
 
+    public void setPaymentForMember(Member m, Payment p)
+    {
+        payments.put(m, p);
+    }
+
 }

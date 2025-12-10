@@ -167,6 +167,7 @@ public class Club
     }
 
     private void showMembers() {
+        Collections.sort(members);
         for (Member member : members) {
             System.out.println("\nName: "+ member.getName() + ", MemberID: " + member.getMemberId());
         }

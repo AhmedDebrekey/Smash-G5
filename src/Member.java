@@ -4,7 +4,7 @@ import ENUMS.Discipline;
 import java.util.EnumMap;
 import java.util.EnumSet;
 
-public class Member extends Person {
+public class Member extends Person implements Comparable<Member> {
     private int memberId;
     private Coach coach;
     private boolean active;
@@ -123,5 +123,10 @@ public class Member extends Person {
     public Date getRegistrationDate()
     {
         return registrationDate;
+    }
+
+    @Override
+    public int compareTo(Member o) {
+        return Integer.compare(this.getMemberId(), o.getMemberId());
     }
 }

@@ -60,7 +60,7 @@ public class Club
         cashier.registerMember(member);
         notifyDataChanged();
     }
-
+    //Add to menu!
     public void removeMember(Member member)
     {
         members.remove(member);
@@ -379,6 +379,20 @@ public class Club
         payment.setPaid(true);
         notifyDataChanged();
         System.out.println(member.getName() + " has now paid the fee!");
+    }
+
+    public void removeMemberFromClub()
+    {
+        System.out.println(" ");
+        for (int i = 0; i < members.size(); i++)
+    {
+        Member member = members.get(i);
+        System.out.println("Name: " + member.getName() + ", ID: " + member.getMemberId());
+    }
+        Member member = findMemberByID();
+        members.remove(member);
+        notifyDataChanged();
+        System.out.println("\nID: " + member.getMemberId() + ", Name: " + member.getName() + " has now been removed from smash.");
     }
 
     public void registerTournament() {

@@ -25,7 +25,7 @@ public class Date
         return day;
     }
 
-    public boolean skudAar()
+    public boolean leapYear()
     {
         if (getYear() % 4 != 0)
             return false;
@@ -36,7 +36,7 @@ public class Date
 
     public boolean erDetSkudDag()
     {
-        if (skudAar() && getMonth() != 2 && getDay() != 29)
+        if (leapYear() && getMonth() != 2 && getDay() != 29)
             return false;
         return true;
     }
@@ -55,9 +55,9 @@ public class Date
             return false;
         if (getDay() < 1 || getDay() > 31)
             return false;
-        if (getMonth() == 2 && !skudAar() && getDay() > 28)
+        if (getMonth() == 2 && !leapYear() && getDay() > 28)
             return false;
-        if (getMonth() == 2 && skudAar() && getDay() > 29)
+        if (getMonth() == 2 && leapYear() && getDay() > 29)
             return false;
         if (getDay() > 30 && (getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11 ))
             return false;

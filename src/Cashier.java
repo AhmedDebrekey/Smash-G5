@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Cashier {
 
-    public Cashier(){};
+    public Cashier(){}
 
     private HashMap<Member, Payment> payments = new HashMap<>();
 

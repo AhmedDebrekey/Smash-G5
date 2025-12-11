@@ -26,13 +26,13 @@ public class Main {
         while (running) {
             System.out.println("\n===== SMASH CLUB MANAGEMENT SYSTEM =====");
             System.out.println("1. Add Member");
-            System.out.println("2. Edit Member");
-            System.out.println("3. Register Match");
-            System.out.println("4. Show Match Rankings");
-            System.out.println("5. Show Members Rankings");
-            System.out.println("6. Payment Overview");
-            System.out.println("7. Mark Member as Paid");
-            System.out.println("8. Save Data");
+            System.out.println("2. Remove Member");
+            System.out.println("3. Edit Member");
+            System.out.println("4. Register Match");
+            System.out.println("5. Show Match Rankings");
+            System.out.println("6. Show Members Rankings");
+            System.out.println("7. Payment Overview");
+            System.out.println("8. Mark Member as Paid");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -43,35 +43,33 @@ public class Main {
                     System.out.println("\n>>> Adding member... ");
                     smash.createMember();
                 }
-
                 case "2" -> {
+                    System.out.println("\n>>> Showing members...");
+                    smash.removeMemberFromClub();
+                }
+                case "3" -> {
                     System.out.println("\n>>> Editing member... ");
                     smash.editMember();
                 }
-                case "3"  -> {
+                case "4"  -> {
                     System.out.println("\n>>> Register Tournament... ");
                     smash.registerTournament();
                 }
-                case "4" -> {
+                case "5" -> {
                     System.out.println("\n>>> Showing rankings... ");
                     smash.ShowMatchResults();
                 }
-                case "5"  -> {
+                case "6"  -> {
                     System.out.println("\n>>> Showing Members Rankings... ");
                     smash.ShowMembersResults();
                 }
-                case "6"  -> {
+                case "7"  -> {
                     System.out.println("\n>>> Showing payment overview...");
                     smash.paymentOverview();
                 }
-                case "7" -> {
+                case "8" -> {
                     System.out.println("\n>>> Showing members...");
                     smash.setMemberAsPaid();
-                }
-                case "8" -> {
-                    System.out.println("\n>>> Saving data... is done automatically after any change");
-                    // TODO: Save the data
-                    smash.notifyDataChanged();
                 }
                 case "0" -> {
                     System.out.println("\nExiting program...");

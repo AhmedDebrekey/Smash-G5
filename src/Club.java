@@ -387,7 +387,7 @@ public class Club
         for (int i = 0; i < members.size(); i++)
     {
         Member member = members.get(i);
-        System.out.println("Name: " + member.getName() + ", ID: " + member.getMemberId());
+        System.out.println("ID: " + member.getMemberId() + ", Name: " + member.getName());
     }
         Member member = findMemberByID();
         members.remove(member);

@@ -162,7 +162,9 @@ public class Club
             "Invalid Input only use 'y' or 'n'");
 
 
-        Member member = new Member(name, bDay, email, memberId, chosenCoach, chosenDisciplines, isCompetitive);
+        java.time.LocalDate today = java.time.LocalDate.now();
+        Date registerationDate = new Date( today.getYear() * 10000 + today.getMonthValue() * 100 + today.getDayOfMonth());
+        Member member = new Member(name, bDay, email, memberId, chosenCoach, chosenDisciplines, isCompetitive, registerationDate);
         addMember(member);
     }
 
@@ -172,18 +174,7 @@ public class Club
             System.out.println("\nName: "+ member.getName() + ", MemberID: " + member.getMemberId());
         }
     }
-
-    private boolean showMembersInDisciplinationforkanation(List<Member> otherMembers, Discipline discipline) {
-        boolean hasPlayers = false;
-        for (Member member : members) {
-            if (member.getdiscipline().contains(discipline) && !otherMembers.contains(member)) {
-                hasPlayers = true;
-                System.out.println("\nName: "+ member.getName() + ", MemberID: " + member.getMemberId() + " age group: " + member.getAgeGroup());
-            }
-        }
-        return hasPlayers;
-    }
-
+    
     public Member findMemberByID() {
         while (true) {
             int id = InputHelpers.ReadInteger(
@@ -215,6 +206,11 @@ public class Club
 
     public void editMember() {
         showMembers();
+
+        if (members.isEmpty()) {
+            System.out.println("No members in the club...");
+            return;
+        }
 
         Member member = findMemberByID();
 
@@ -504,6 +500,12 @@ public class Club
     }
 
     public void ShowMatchResults(){
+        if (matches.isEmpty())
+        {
+            System.out.println("No matches found.");
+            return;
+        }
+
         int index = 1;
         for (String name : matches.values())
         {
@@ -512,7 +514,7 @@ public class Club
         }
 
 
-        int matchIndex = InputHelpers.ReadInteger("Enter Match Index: ", "Enter a proper number dumbie");
+        int matchIndex = InputHelpers.ReadInteger("Enter Match Index: ", "Enter a proper number");
 
         List<Map.Entry<Match, String>> entries = new ArrayList<>(matches.entrySet());
         Map.Entry<Match, String> selectedMatch = entries.get(matchIndex - 1);

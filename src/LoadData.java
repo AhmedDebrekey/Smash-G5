@@ -1,5 +1,6 @@
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.*;
 import ENUMS.Discipline;
 
@@ -17,6 +18,7 @@ public class LoadData {
         int paymentAmount = 0;
         int paymentDateInt = 0;
         boolean paymentPaid = false;
+        Date registrationDate = null;
     }
 
     private static class RawMatch {
@@ -84,6 +86,7 @@ public class LoadData {
                         if (parts.length >= 13) {
                             String maybeAmount = parts[parts.length - 3].trim();
                             String maybeDate = parts[parts.length - 2].trim();
+                            rm.registrationDate = new Date(Integer.parseInt(maybeDate));
                             String maybePaid = parts[parts.length - 1].trim();
                             int amt = parseIntSafe(maybeAmount);
                             int d = parseIntSafe(maybeDate);
@@ -145,8 +148,8 @@ public class LoadData {
                     }
                 }
 
-                Member member = new Member(rm.name, rm.birth, rm.email, rm.memberId, coachObj, rm.disciplines, rm.competitive);
-                if (club.getMembers() instanceof Collection) ((Collection) club.getMembers()).add(member);
+                Member member = new Member(rm.name, rm.birth, rm.email, rm.memberId, coachObj, rm.disciplines, rm.competitive, rm.registrationDate);
+                if (club.getMembers() instanceof Collection) club.addMember(member);
                 membersAdded++;
             }
 

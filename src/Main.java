@@ -20,8 +20,6 @@ public class Main {
 
         smash.addDataChangeListener(new AutoSaveListener (smash, "Smash_Data.txt", cashier));
 
-
-
         Scanner input = new Scanner(System.in);
         boolean running = true;
 

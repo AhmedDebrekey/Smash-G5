@@ -17,7 +17,7 @@ public class Member extends Person implements Comparable<Member> {
     public Member() {
     }
 
-    public Member(String name, int bDay, String email, int memberId, Coach coach, EnumSet<Discipline> disciplines, boolean competitive) {
+    public Member(String name, int bDay, String email, int memberId, Coach coach, EnumSet<Discipline> disciplines, boolean competitive, Date registrationDate) {
         super(name, bDay, email);
         this.memberId = memberId;
         this.active = true;
@@ -39,9 +39,8 @@ public class Member extends Person implements Comparable<Member> {
             this.results.put(d, 0);
         }
 
-        java.time.LocalDate today = java.time.LocalDate.now();
-        int fullDate = today.getYear() * 10000 + today.getMonthValue() * 100 + today.getDayOfMonth();
-        this.registrationDate = new Date(fullDate);
+        this.registrationDate = registrationDate;
+        System.out.println("Member: " + getName() + " registered at: " + registrationDate.toString());
     }
 
     public int getMemberId() {

@@ -64,18 +64,22 @@ public class InputHelpers {
         }
     }
 
-    static public int ReadDate(String Message, String ErrorMessage) {
+    static public int ReadDate(String message, String errorMessage) {
         while (true) {
-            System.out.print(Message);
-            int value = scanner.nextInt();
-            Date date = new Date(value);
+            System.out.print(message);
+            try {
+                int value = scanner.nextInt();
 
-            if (date.valid()) {
-                return value;
+                Date date = new Date(value);
+                if (date.valid()) {
+                    return value;
+                }
+
+                System.out.println(errorMessage);
+            } catch (InputMismatchException e) {
+                System.out.println(errorMessage);
+                scanner.nextLine();
             }
-
-            System.out.println(ErrorMessage);
-            scanner.nextLine();
         }
     }
 

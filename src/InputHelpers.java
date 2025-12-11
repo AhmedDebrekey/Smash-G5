@@ -1,4 +1,5 @@
 import ENUMS.Discipline;
+import Exceptions.InvalidDateException;
 
 import java.util.EnumSet;
 import java.util.InputMismatchException;
@@ -71,11 +72,16 @@ public class InputHelpers {
                 int value = scanner.nextInt();
 
                 Date date = new Date(value);
-                if (date.valid()) {
+
+                try
+                {
+                    date.validate();
                     return value;
+                }catch (InvalidDateException e)
+                {
+                    System.out.println(errorMessage);
                 }
 
-                System.out.println(errorMessage);
             } catch (InputMismatchException e) {
                 System.out.println(errorMessage);
                 scanner.nextLine();
@@ -83,18 +89,7 @@ public class InputHelpers {
         }
     }
 
-    public static String ReadRegex(String Message, String ErrorMessage, String Regex) {
-        while (true) {
-            System.out.print(Message);
-            String input = scanner.nextLine().trim();
 
-            if (input.matches(Regex)) {
-                return input;
-            }
-
-            System.out.println(ErrorMessage);
-        }
-    }
 
     public static EnumSet<Discipline> ReadDisciplines() {
         EnumSet<Discipline> chosenDisciplines = EnumSet.noneOf(Discipline.class);
@@ -191,6 +186,25 @@ public class InputHelpers {
         }
     }
 
+    public static String ReadRegex(String Message, String ErrorMessage, String Regex)
+    {
+        while (true) {
+            System.out.print(Message);
+            String input = scanner.nextLine().trim();
+
+            // First: check for back option
+            if (input.equals("-1")) {
+                return "-1";
+            }
+
+            // Then validate regex
+            if (input.matches(Regex)) {
+                return input;
+            }
+
+            System.out.println(ErrorMessage);
+        }
+    }
 
     public static void ClearLine() {
         if (scanner.hasNextLine())

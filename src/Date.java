@@ -1,3 +1,5 @@
+import Exceptions.InvalidDateException;
+
 public class Date
 {
     private int date; // Format: YYYYMMDD
@@ -62,6 +64,12 @@ public class Date
         if (getDay() > 30 && (getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11 ))
             return false;
         return true;
+    }
+
+    public void validate() throws InvalidDateException {
+        if (!valid()) {
+            throw new InvalidDateException("Invalid date: " + date);
+        }
     }
 
     public int getAge() {

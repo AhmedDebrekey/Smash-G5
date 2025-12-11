@@ -52,8 +52,8 @@ public class Main {
                     smash.editMember();
                 }
                 case "4"  -> {
-                    System.out.println("\n>>> Register Tournament... ");
-                    smash.registerTournament();
+                    System.out.println("\n>>> Register Match... ");
+                    smash.registerMatch();
                 }
                 case "5" -> {
                     System.out.println("\n>>> Showing rankings... ");

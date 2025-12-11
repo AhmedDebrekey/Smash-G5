@@ -81,4 +81,9 @@ public class Date
         return age;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%04d-%02d-%02d", getYear(), getMonth(), getDay());
+    }
+
 }

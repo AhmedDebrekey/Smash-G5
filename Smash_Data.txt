@@ -1,0 +1,6 @@
+[Smash]
+Smash;Guldbergsgade 29N
+
+[Member]
+Debreky;20030401;ahdebreky@gmail.com;203;Not Johan Hansen;[SINGLE, DOUBLE, MIXED_DOUBLE];true;20251211;true;0;0;0;1500;20250111;false;
+

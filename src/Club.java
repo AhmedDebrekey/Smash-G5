@@ -2,10 +2,6 @@ import ENUMS.AgeGroup;
 import ENUMS.Discipline;
 import Exceptions.InvalidMemberIDException;
 import Exceptions.InvalidScoreException;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.*;
 
 public class Club
@@ -28,10 +24,6 @@ public class Club
 
     public void addDataChangeListener(DataChangeListener listener) {
         listeners.add(listener);
-    }
-
-    public void removeDataChangeListener(DataChangeListener listener) {
-        listeners.remove(listener);
     }
 
     public void notifyDataChanged() {
@@ -62,11 +54,6 @@ public class Club
         cashier.registerMember(member);
         notifyDataChanged();
     }
-    //Add to menu!
-    public void removeMember(Member member)
-    {
-        members.remove(member);
-    }
 
     public ArrayList<Member> getMembers()
     {
@@ -78,10 +65,6 @@ public class Club
         coaches.add(coach);
     }
 
-    public void removeCoach(Coach coach)
-    {
-        coaches.remove(coach);
-    }
 
     public ArrayList<Coach> getCoaches()
     {
@@ -314,6 +297,12 @@ public class Club
                 member.setDisciplines(newDisciplines);
             }
         }
+
+        boolean isActive = InputHelpers.ReadYesOrNo(
+                "\nEnter if the member is active [y/n]: ",
+                "Invalid Input only use 'y' or 'n'");
+        member.setActive(isActive);
+
 
         boolean isCompetitive = InputHelpers.ReadYesOrNo(
                 "\nEnter if the player is competitive [y/n]: ",

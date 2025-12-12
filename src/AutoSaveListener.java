@@ -1,8 +1,6 @@
 import ENUMS.Discipline;
-
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 
 public class AutoSaveListener implements DataChangeListener{
     private final Club club;

@@ -40,7 +40,6 @@ public class Member extends Person implements Comparable<Member> {
         }
 
         this.registrationDate = registrationDate;
-        System.out.println("Member: " + getName() + " registered at: " + registrationDate.toString());
     }
 
     public int getMemberId() {
@@ -51,12 +50,9 @@ public class Member extends Person implements Comparable<Member> {
         return coach;
     }
 
-    public void setToActive() {
-        active = true;
-    }
-
-    public void setToPassive() {
-        active = false;
+    public void setActive(boolean active)
+    {
+        this.active = active;
     }
 
     public boolean isActive() {
@@ -86,9 +82,6 @@ public class Member extends Person implements Comparable<Member> {
         this.name = name;
     }
 
-    public void setBirthdate(int bDay) {
-        this.bDay = new Date(bDay);
-    }
 
     public void setEmail(String email) {
         this.email = email;

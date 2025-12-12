@@ -36,13 +36,6 @@ public class Date
         return true;
     }
 
-    public boolean erDetSkudDag()
-    {
-        if (leapYear() && getMonth() != 2 && getDay() != 29)
-            return false;
-        return true;
-    }
-
     public int getMonth() {
         int maaned = 0;
         maaned = ((getDate() / 100) % 100);

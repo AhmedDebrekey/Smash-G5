@@ -1,6 +1,3 @@
-import ENUMS.Discipline;
-import java.util.InputMismatchException;
-import java.util.EnumSet;
 import java.util.Scanner;
 
 public class Main {
